@@ -10,17 +10,12 @@ def ask_ollama(prompt, model="llama3.1:8b"):
     }
 
     try:
-        response = requests.post(url, json=payload, timeout=120)
+        response = requests.post(url, json=payload, timeout=30)
 
-        if response.status_code != 200:
-            return f"Error {response.status_code}: {response.text}"
+        if response.status_code == 200:
+            return response.json().get("response", "")
 
-        data = response.json()
+        return None
 
-        return data.get("response", "No response received.")
-
-    except requests.exceptions.ConnectionError:
-        return "❌ Ollama is not running. Run: ollama serve"
-
-    except Exception as e:
-        return f"❌ Error: {str(e)}"
+    except:
+        return None
