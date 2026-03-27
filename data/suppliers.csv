@@ -1,0 +1,4 @@
+supplier,sku,fill_rate,avg_lead_time_days,risk_score
+SupplierX,A100,0.96,5,0.20
+SupplierY,B200,0.89,7,0.45
+SupplierZ,C300,0.92,4,0.30

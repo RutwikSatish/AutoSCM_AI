@@ -1,0 +1,4 @@
+sku,on_hand,reorder_point,lead_time_days
+A100,300,150,5
+B200,140,100,7
+C300,90,80,4
