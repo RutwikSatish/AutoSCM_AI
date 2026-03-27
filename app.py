@@ -144,7 +144,6 @@ if run_button:
 # AI Insights
 # -----------------------------
 if ai_button:
-
     if "final_df" not in st.session_state:
         st.warning("⚠️ Run analysis first!")
     else:
@@ -167,10 +166,38 @@ if ai_button:
         {final_df.to_string(index=False)}
         """
 
-        with st.spinner("Thinking like a supply chain expert..."):
+        with st.spinner("Analyzing..."):
             result = ask_ollama(prompt)
 
-        st.write(result)
+        # -----------------------------
+        # Fallback if Ollama not available
+        # -----------------------------
+        if not result:
+
+            st.info("⚠️ Running fallback AI (cloud mode)")
+
+            high_risk = final_df[final_df["risk_level"] == "HIGH"]
+            medium_risk = final_df[final_df["risk_level"] == "MEDIUM"]
+
+            summary = f"""
+            🔴 High Risk SKUs: {len(high_risk)}
+            🟡 Medium Risk SKUs: {len(medium_risk)}
+
+            Key Observations:
+            - Inventory levels {'are critical' if len(high_risk) > 0 else 'are stable'}
+            - Demand variability average: {round(final_df['demand_cv'].mean(), 2)}
+            - Forecast accuracy (WAPE): {round(final_df['WAPE'].mean(), 2)}
+
+            Recommendations:
+            - Focus on high-risk SKUs for immediate action
+            - Adjust reorder points for volatile demand
+            - Improve forecasting for better planning
+            """
+
+            st.write(summary)
+
+        else:
+            st.write(result)
 
 # -----------------------------
 # Footer
