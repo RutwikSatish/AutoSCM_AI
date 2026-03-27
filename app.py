@@ -143,6 +143,7 @@ if run_button:
 # -----------------------------
 # AI Insights
 # -----------------------------
+st.caption("AI insights powered locally (Ollama) or fallback logic in cloud.")
 if ai_button:
     if "final_df" not in st.session_state:
         st.warning("⚠️ Run analysis first!")
